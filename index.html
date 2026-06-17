@@ -1,0 +1,2029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ceres Power (CWR) — New Business Development Hire Monitor</title>
+    <style>
+        :root {
+            --bg: #0f1117;
+            --card: #1a1d27;
+            --border: #2a2d3a;
+            --accent: #4f8cff;
+            --accent2: #22c55e;
+            --warn: #f59e0b;
+            --danger: #ef4444;
+            --text: #e2e4ea;
+            --muted: #8b8fa3;
+            --hover: #252836;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .header h1 span { color: var(--accent); }
+        .header-subtitle {
+            color: var(--muted);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        .last-checked {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+        .last-checked strong { color: var(--accent2); }
+
+        /* Signal Sequence */
+        .signal-sequence {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        .signal-sequence h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        .timeline {
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+        .timeline-step {
+            flex: 1;
+            min-width: 160px;
+            text-align: center;
+            position: relative;
+        }
+        .timeline-step::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: var(--border);
+        }
+        .timeline-step:last-child::after { display: none; }
+        .step-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: 700;
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        .step-dot.active { background: var(--accent); color: #fff; }
+        .step-dot.future { background: var(--border); color: var(--muted); }
+        .step-dot.complete { background: var(--accent2); color: #fff; }
+        .step-label {
+            font-size: 12px;
+            color: var(--muted);
+            padding: 0 8px;
+        }
+        .step-label strong { color: var(--text); display: block; font-size: 13px; margin-bottom: 2px; }
+
+        /* Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 24px; margin-bottom: 32px; }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .card h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+        }
+        .card h2 .icon { font-size: 20px; }
+        .card-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+        .badge-live { background: rgba(34,197,94,0.15); color: var(--accent2); }
+        .badge-manual { background: rgba(245,158,11,0.15); color: var(--warn); }
+
+        /* Source Links */
+        .source-list { list-style: none; }
+        .source-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
+        }
+        .source-item:last-child { border-bottom: none; }
+        .source-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .source-icon.linkedin { background: rgba(10,102,194,0.15); color: #0a66c2; }
+        .source-icon.jobs { background: rgba(79,140,255,0.15); color: var(--accent); }
+        .source-icon.google { background: rgba(234,67,53,0.15); color: #ea4335; }
+        .source-icon.gov { background: rgba(34,197,94,0.15); color: var(--accent2); }
+        .source-icon.events { background: rgba(168,85,247,0.15); color: #a855f7; }
+        .source-icon.news { background: rgba(245,158,11,0.15); color: var(--warn); }
+        .source-info { flex: 1; }
+        .source-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+        .source-desc { font-size: 13px; color: var(--muted); }
+        .source-link {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .source-link:hover { text-decoration: underline; }
+        .source-tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: rgba(79,140,255,0.1);
+            color: var(--accent);
+            white-space: nowrap;
+            margin-top: 4px;
+        }
+
+        /* Checklist */
+        .checklist { list-style: none; }
+        .checklist li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+        .checklist li:last-child { border-bottom: none; }
+        .check-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            flex-shrink: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            margin-top: 1px;
+        }
+        .check-box:hover { border-color: var(--accent); }
+        .check-box.checked {
+            background: var(--accent2);
+            border-color: var(--accent2);
+        }
+        .check-box.checked::after {
+            content: '\2713';
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .check-label { flex: 1; }
+        .check-label.done { text-decoration: line-through; color: var(--muted); }
+
+        /* Region Map */
+        .region-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .region-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+        .region-card:hover { border-color: var(--accent); }
+        .region-flag { font-size: 28px; margin-bottom: 8px; }
+        .region-name { font-weight: 600; font-size: 14px; color: #fff; margin-bottom: 4px; }
+        .region-partner { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+        .region-status {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-covered { background: rgba(34,197,94,0.15); color: var(--accent2); }
+        .status-gap { background: rgba(239,68,68,0.15); color: var(--danger); }
+        .status-partial { background: rgba(245,158,11,0.15); color: var(--warn); }
+
+        /* Findings Log */
+        .log-table { width: 100%; border-collapse: collapse; }
+        .log-table th {
+            text-align: left;
+            padding: 10px 12px;
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+        }
+        .log-table td {
+            padding: 12px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .log-table tr:hover { background: var(--hover); }
+        .signal-strength {
+            display: inline-flex;
+            gap: 2px;
+        }
+        .signal-bar {
+            width: 4px;
+            height: 14px;
+            border-radius: 2px;
+            background: var(--border);
+        }
+        .signal-bar.on { background: var(--accent2); }
+        .signal-bar.warn { background: var(--warn); }
+        .log-type {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        .type-hire { background: rgba(79,140,255,0.15); color: var(--accent); }
+        .type-job { background: rgba(168,85,247,0.15); color: #a855f7; }
+        .type-event { background: rgba(245,158,11,0.15); color: var(--warn); }
+        .type-filing { background: rgba(34,197,94,0.15); color: var(--accent2); }
+        .type-news { background: rgba(239,68,68,0.15); color: var(--danger); }
+
+        /* Add Entry Form */
+        .add-entry {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        .add-entry h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: inherit;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-danger { background: var(--danger); color: #fff; margin-left: 8px; }
+        .btn-export { background: var(--border); color: var(--text); margin-left: 8px; }
+        .btn-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+
+        /* Google Alert Generators */
+        .alert-generator {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+        .alert-query {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 13px;
+            color: var(--accent);
+            flex: 1;
+            word-break: break-all;
+        }
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .btn-create { background: var(--accent); color: #fff; }
+        .btn-copy { background: var(--border); color: var(--text); }
+
+        /* People Table */
+        .people-table { width: 100%; border-collapse: collapse; }
+        .people-table th {
+            text-align: left; padding: 10px 12px; font-size: 12px;
+            color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+        }
+        .people-table td {
+            padding: 12px; font-size: 14px;
+            border-bottom: 1px solid var(--border); vertical-align: top;
+        }
+        .people-table tr:hover { background: var(--hover); }
+        .people-table a { color: var(--accent); text-decoration: none; }
+        .people-table a:hover { text-decoration: underline; }
+        .role-tag {
+            font-size: 11px; padding: 2px 8px; border-radius: 6px; font-weight: 600;
+            display: inline-block; white-space: nowrap;
+        }
+        .role-bd { background: rgba(79,140,255,0.15); color: var(--accent); }
+        .role-commercial { background: rgba(168,85,247,0.15); color: #a855f7; }
+        .role-regional { background: rgba(245,158,11,0.15); color: var(--warn); }
+        .role-leadership { background: rgba(34,197,94,0.15); color: var(--accent2); }
+        .relevance-high { color: var(--accent2); font-weight: 600; }
+        .relevance-med { color: var(--warn); font-weight: 600; }
+        .relevance-low { color: var(--muted); }
+
+        /* RSS Feed */
+        .rss-feed { list-style: none; }
+        .rss-item {
+            padding: 12px 0; border-bottom: 1px solid var(--border);
+        }
+        .rss-item:last-child { border-bottom: none; }
+        .rss-item-title { font-size: 14px; font-weight: 500; }
+        .rss-item-title a { color: var(--accent); text-decoration: none; }
+        .rss-item-title a:hover { text-decoration: underline; }
+        .rss-item-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
+        .rss-item-source { font-size: 11px; color: var(--warn); }
+        .feed-status {
+            font-size: 12px; padding: 6px 12px; border-radius: 6px;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .feed-loading { background: rgba(79,140,255,0.1); color: var(--accent); }
+        .feed-ok { background: rgba(34,197,94,0.1); color: var(--accent2); }
+        .feed-err { background: rgba(239,68,68,0.1); color: var(--danger); }
+        .pulse {
+            width: 8px; height: 8px; border-radius: 50%; background: var(--accent2);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .refresh-btn {
+            background: var(--border); border: none; color: var(--text); padding: 6px 14px;
+            border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: 600;
+        }
+        .refresh-btn:hover { opacity: 0.85; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 32px 0;
+            color: var(--muted);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; }
+            .timeline { flex-direction: column; align-items: stretch; }
+            .timeline-step::after { display: none; }
+            .timeline-step { text-align: left; display: flex; gap: 12px; align-items: center; padding: 8px 0; }
+            .step-dot { margin: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>Ceres Power <span>(CWR)</span> — BD Hire Monitor</h1>
+                <div class="header-subtitle">Tracking new Business Development hires and signals that precede OEM licensing announcements</div>
+            </div>
+            <div class="last-checked">
+                Last checked: <strong id="lastChecked">—</strong>
+            </div>
+        </div>
+
+        <!-- Deal Signal Sequence -->
+        <div class="signal-sequence">
+            <h2>Typical Deal Signal Sequence (12-18 months before announcement)</h2>
+            <div class="timeline">
+                <div class="timeline-step">
+                    <div class="step-dot active">1</div>
+                    <div class="step-label"><strong>BD Job Posted</strong>Role listed with regional focus</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-dot future">2</div>
+                    <div class="step-label"><strong>New Hire Announced</strong>LinkedIn "Excited to join" post</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-dot future">3</div>
+                    <div class="step-label"><strong>Technical Roles Follow</strong>Engineering hires in same region</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-dot future">4</div>
+                    <div class="step-label"><strong>Event Appearances</strong>Regional trade shows & panels</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-dot future">5</div>
+                    <div class="step-label"><strong>Subsidiary Filing</strong>Entity incorporated in new jurisdiction</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-dot future">6</div>
+                    <div class="step-label"><strong>Quiet Period</strong>NDA / deal negotiation</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-dot future">7</div>
+                    <div class="step-label"><strong>RNS Announcement</strong>New OEM licensing partner</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sources Grid -->
+        <div class="grid">
+
+            <!-- LinkedIn Sources -->
+            <div class="card">
+                <h2><span class="icon">in</span> LinkedIn Monitoring <span class="card-badge badge-manual">Manual</span></h2>
+                <ul class="source-list">
+                    <li class="source-item">
+                        <div class="source-icon linkedin">in</div>
+                        <div class="source-info">
+                            <div class="source-name">Ceres Power Company Page</div>
+                            <div class="source-desc">Follow for new employee announcements, "excited to join" posts, and team growth updates</div>
+                            <a href="https://www.linkedin.com/company/ceres-power/" target="_blank" class="source-link">Open in LinkedIn &rarr;</a>
+                        </div>
+                        <span class="source-tag">Weekly</span>
+                    </li>
+                    <li class="source-item">
+                        <div class="source-icon linkedin">in</div>
+                        <div class="source-info">
+                            <div class="source-name">LinkedIn People Search</div>
+                            <div class="source-desc">Search <code>"Ceres Power" business development</code> — filter by "Date posted" to find recent hires and role changes</div>
+                            <a href="https://www.linkedin.com/search/results/people/?keywords=%22Ceres%20Power%22%20business%20development&origin=GLOBAL_SEARCH_HEADER" target="_blank" class="source-link">Run search &rarr;</a>
+                        </div>
+                        <span class="source-tag">Weekly</span>
+                    </li>
+                    <li class="source-item">
+                        <div class="source-icon linkedin">in</div>
+                        <div class="source-info">
+                            <div class="source-name">LinkedIn Job Listings</div>
+                            <div class="source-desc">Check for BD, Partnerships, Licensing, Commercial, or Country Manager roles — regional focus in title is the key signal</div>
+                            <a href="https://www.linkedin.com/company/ceres-power/jobs/" target="_blank" class="source-link">View open roles &rarr;</a>
+                        </div>
+                        <span class="source-tag">Weekly</span>
+                    </li>
+                    <li class="source-item">
+                        <div class="source-icon linkedin">in</div>
+                        <div class="source-info">
+                            <div class="source-name">LinkedIn Sales Navigator (Optional)</div>
+                            <div class="source-desc">Set alerts for new hires and role changes at Ceres Power. ~&pound;60/mo but gives real-time notifications</div>
+                            <a href="https://www.linkedin.com/sales/" target="_blank" class="source-link">Open Sales Navigator &rarr;</a>
+                        </div>
+                        <span class="source-tag">Real-time</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Job Boards -->
+            <div class="card">
+                <h2><span class="icon">&#128188;</span> Job Board Monitoring <span class="card-badge badge-live">Alertable</span></h2>
+                <ul class="source-list">
+                    <li class="source-item">
+                        <div class="source-icon jobs">&#127968;</div>
+                        <div class="source-info">
+                            <div class="source-name">Ceres Power Careers Page</div>
+                            <div class="source-desc">Official job listings — first place new roles appear. Look for region-specific titles</div>
+                            <a href="https://www.ceres.tech/careers/" target="_blank" class="source-link">View careers page &rarr;</a>
+                        </div>
+                        <span class="source-tag">Weekly</span>
+                    </li>
+                    <li class="source-item">
+                        <div class="source-icon jobs">&#128270;</div>
+                        <div class="source-info">
+                            <div class="source-name">Indeed — Ceres Power</div>
+                            <div class="source-desc">Set email alert for "Ceres Power" — catches roles cross-posted from recruiters</div>
+                            <a href="https://www.indeed.co.uk/jobs?q=%22Ceres+Power%22" target="_blank" class="source-link">Search Indeed &rarr;</a>
+                        </div>
+                        <span class="source-tag">Alert</span>
+                    </li>
+                    <li class="source-item">
+                        <div class="source-icon jobs">&#11088;</div>
+                        <div class="source-info">
+                            <div class="source-name">Glassdoor — Ceres Power</div>
+                            <div class="source-desc">Job postings + employee reviews mentioning regional offices or BD expansion</div>
+                            <a href="https://www.glassdoor.co.uk/Jobs/Ceres-Power-Jobs-E1098057.htm" target="_blank" class="source-link">Search Glassdoor &rarr;</a>
+                        </div>
+                        <span class="source-tag">Alert</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Google Alerts -->
+            <div class="card">
+                <h2><span class="icon">&#128276;</span> Google Alerts — Pre-Built Queries <span class="card-badge badge-live">Automated</span></h2>
+                <div class="alert-generator">
+                    <div class="alert-query">"Ceres Power" hiring OR "joins Ceres" OR "appointed"</div>
+                    <a href="https://www.google.com/alerts#1:1" target="_blank" class="btn-sm btn-create" onclick="this.href='https://www.google.com/alerts?q=%22Ceres+Power%22+hiring+OR+%22joins+Ceres%22+OR+%22appointed%22'">Create Alert</a>
+                </div>
+                <div class="alert-generator">
+                    <div class="alert-query">"Ceres Power" "business development" OR "partnerships" OR "licensing"</div>
+                    <a href="https://www.google.com/alerts?q=%22Ceres+Power%22+%22business+development%22+OR+%22partnerships%22+OR+%22licensing%22" target="_blank" class="btn-sm btn-create">Create Alert</a>
+                </div>
+                <div class="alert-generator">
+                    <div class="alert-query">"Ceres Power" "North America" OR "United States" OR "Middle East" OR "Southeast Asia"</div>
+                    <a href="https://www.google.com/alerts?q=%22Ceres+Power%22+%22North+America%22+OR+%22United+States%22+OR+%22Middle+East%22+OR+%22Southeast+Asia%22" target="_blank" class="btn-sm btn-create">Create Alert</a>
+                </div>
+                <div class="alert-generator">
+                    <div class="alert-query">"Ceres Power" partner OR OEM OR license OR collaboration -stock -shares</div>
+                    <a href="https://www.google.com/alerts?q=%22Ceres+Power%22+partner+OR+OEM+OR+license+OR+collaboration+-stock+-shares" target="_blank" class="btn-sm btn-create">Create Alert</a>
+                </div>
+                <div class="alert-generator">
+                    <div class="alert-query">"Ceres Power" "tech transfer" OR "technology transfer" OR "Lead Engineer"</div>
+                    <a href="https://www.google.com/alerts?q=%22Ceres+Power%22+%22tech+transfer%22+OR+%22technology+transfer%22+OR+%22Lead+Engineer%22" target="_blank" class="btn-sm btn-create">Create Alert</a>
+                </div>
+                <div class="alert-generator">
+                    <div class="alert-query">"GE Vernova" OR "Cummins" "solid oxide" OR "SOFC" hiring OR engineer OR manufacturing</div>
+                    <a href="https://www.google.com/alerts?q=%22GE+Vernova%22+OR+%22Cummins%22+%22solid+oxide%22+OR+%22SOFC%22+hiring+OR+engineer+OR+manufacturing" target="_blank" class="btn-sm btn-create">Create Alert</a>
+                </div>
+            </div>
+
+            <!-- Regulatory & Filings -->
+            <div class="card">
+                <h2><span class="icon">&#128220;</span> Regulatory & Corporate Filings <span class="card-badge badge-manual">Manual</span></h2>
+                <ul class="source-list">
+                    <li class="source-item">
+                        <div class="source-icon gov">&#127963;</div>
+                        <div class="source-info">
+                            <div class="source-name">Companies House (UK)</div>
+                            <div class="source-desc">Check for new subsidiary incorporations (e.g. "Ceres Power Inc." in Delaware would signal US entry)</div>
+                            <a href="https://find-and-update.company-information.service.gov.uk/search?q=ceres+power" target="_blank" class="source-link">Search Companies House &rarr;</a>
+                        </div>
+                        <span class="source-tag">Monthly</span>
+                    </li>
+                    <li class="source-item">
+                        <div class="source-icon gov">&#127470;&#127480;</div>
+                        <div class="source-info">
+                            <div class="source-name">SEC EDGAR (US)</div>
+                            <div class="source-desc">Search for any US entity filings — would indicate formal US market entry</div>
+                            <a href="https://www.sec.gov/cgi-bin/browse-edgar?company=ceres+power&CIK=&type=&dateb=&owner=include&count=40&search_text=&action=getcompany" target="_blank" class="source-link">Search EDGAR &rarr;</a>
+                        </div>
+                        <span class="source-tag">Monthly</span>
+                    </li>
+                    <li class="source-item">
+                        <div class="source-icon gov">&#128240;</div>
+                        <div class="source-info">
+                            <div class="source-name">RNS / Regulatory News (LSE)</div>
+                            <div class="source-desc">Official announcements — board appointments, material partnerships, director dealings</div>
+                            <a href="https://www.londonstockexchange.com/news?tab=news-explorer&id=CWR" target="_blank" class="source-link">View RNS feed &rarr;</a>
+                        </div>
+                        <span class="source-tag">Real-time</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Events & Conferences -->
+            <div class="card">
+                <h2><span class="icon">&#127916;</span> Conference & Event Tracking <span class="card-badge badge-manual">Manual</span></h2>
+                <ul class="source-list">
+                    <li class="source-item">
+                        <div class="source-icon events">&#127466;&#127480;</div>
+                        <div class="source-info">
+                            <div class="source-name">DISTRIBUTECH (US)</div>
+                            <div class="source-desc">Major US power/energy conference — Ceres appearing here signals US market interest</div>
+                            <a href="https://www.distributech.com/" target="_blank" class="source-link">Check exhibitor list &rarr;</a>
+                        </div>
+                    </li>
+                    <li class="source-item">
+                        <div class="source-icon events">&#127474;&#127466;</div>
+                        <div class="source-info">
+                            <div class="source-name">ADIPEC (Middle East)</div>
+                            <div class="source-desc">Abu Dhabi energy conference — watch for Ceres presence indicating Gulf region expansion</div>
+                            <a href="https://www.adipec.com/" target="_blank" class="source-link">Check exhibitor list &rarr;</a>
+                        </div>
+                    </li>
+                    <li class="source-item">
+                        <div class="source-icon events">&#127758;</div>
+                        <div class="source-info">
+                            <div class="source-name">Data Centre World (Regional editions)</div>
+                            <div class="source-desc">London, Frankfurt, Singapore, etc. — Ceres at a new regional edition = geographic signal</div>
+                            <a href="https://www.datacentreworld.com/" target="_blank" class="source-link">Check events &rarr;</a>
+                        </div>
+                    </li>
+                    <li class="source-item">
+                        <div class="source-icon events">&#9889;</div>
+                        <div class="source-info">
+                            <div class="source-name">Fuel Cell Seminar & Expo / Hydrogen events</div>
+                            <div class="source-desc">Track Ceres speaker slots alongside non-partner industrials — possible courtship</div>
+                            <a href="https://www.fuelcellsworks.com/events/" target="_blank" class="source-link">View events calendar &rarr;</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- News Sources -->
+            <div class="card">
+                <h2><span class="icon">&#128240;</span> News & Analyst Coverage <span class="card-badge badge-live">Alertable</span></h2>
+                <ul class="source-list">
+                    <li class="source-item">
+                        <div class="source-icon news">&#128200;</div>
+                        <div class="source-info">
+                            <div class="source-name">Proactive Investors (CWR)</div>
+                            <div class="source-desc">Specialist small/mid-cap coverage — often first to report partnership signals</div>
+                            <a href="https://www.proactiveinvestors.co.uk/companies/news/LON:CWR" target="_blank" class="source-link">View CWR coverage &rarr;</a>
+                        </div>
+                    </li>
+                    <li class="source-item">
+                        <div class="source-icon news">&#128196;</div>
+                        <div class="source-info">
+                            <div class="source-name">Fuel Cells Works</div>
+                            <div class="source-desc">Industry news — catches partnership announcements from the partner's side too</div>
+                            <a href="https://fuelcellsworks.com/?s=ceres+power" target="_blank" class="source-link">Search Ceres coverage &rarr;</a>
+                        </div>
+                    </li>
+                    <li class="source-item">
+                        <div class="source-icon news">&#128176;</div>
+                        <div class="source-info">
+                            <div class="source-name">Yahoo Finance (CWR.L)</div>
+                            <div class="source-desc">Aggregated news, analyst estimates, and RNS filings in one feed</div>
+                            <a href="https://finance.yahoo.com/quote/CWR.L/news/" target="_blank" class="source-link">View news feed &rarr;</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Known BD & Commercial Team -->
+        <div class="card" style="margin-bottom: 32px;">
+            <h2><span class="icon">&#128101;</span> Ceres Power — BD & Commercial Team (Known as of Jun 2026)</h2>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+                Extracted from public LinkedIn profiles and company announcements. Monitor these profiles for role changes, new connections with target OEMs, and regional travel signals. A new name appearing below is a leading indicator.
+            </p>
+            <div style="overflow-x: auto;">
+                <table class="people-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Title</th>
+                            <th>Region / Focus</th>
+                            <th>Start Date</th>
+                            <th>Relevance</th>
+                            <th>LinkedIn</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Filip Smeets</strong></td>
+                            <td><span class="role-tag role-leadership">Chief Commercial Officer</span></td>
+                            <td>Global — leads all commercial strategy, licensing, partnerships</td>
+                            <td>Sep 2024</td>
+                            <td><span class="relevance-high">HIGH</span></td>
+                            <td><a href="https://www.linkedin.com/in/filip-smeets-b1a5672/" target="_blank">Profile</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Joseph Lenox</strong></td>
+                            <td><span class="role-tag role-bd">Global Business Development Director</span></td>
+                            <td>Global — converts BD opportunities to contracted outcomes</td>
+                            <td>10+ years at Ceres</td>
+                            <td><span class="relevance-high">HIGH</span></td>
+                            <td><a href="https://www.linkedin.com/in/joseph-boyd-lenox/" target="_blank">Profile</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Saad Ashraf</strong></td>
+                            <td><span class="role-tag role-regional">Business Head — India &amp; MENA</span></td>
+                            <td>India, Middle East &amp; North Africa</td>
+                            <td>Active 2025-26</td>
+                            <td><span class="relevance-high">HIGH</span></td>
+                            <td><a href="https://www.linkedin.com/in/ashrafsaad/" target="_blank">Profile</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Jonathan Heywood</strong></td>
+                            <td><span class="role-tag role-regional">GM of Ceres China</span></td>
+                            <td>China — Weichai relationship</td>
+                            <td>Active 2025-26</td>
+                            <td><span class="relevance-high">HIGH</span></td>
+                            <td><a href="https://cn.linkedin.com/in/jonathan-heywood" target="_blank">Profile</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Naoya Kodama</strong></td>
+                            <td><span class="role-tag role-bd">Business Development</span></td>
+                            <td>Japan — bilingual Japanese/English, OEM customer development</td>
+                            <td>Active 2025-26</td>
+                            <td><span class="relevance-high">HIGH</span></td>
+                            <td><a href="https://www.linkedin.com/in/naoya-kodama-9b44626/" target="_blank">Profile</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Steven Weber, P.E.</strong></td>
+                            <td><span class="role-tag role-regional">Business Development Director, North America</span></td>
+                            <td>United States / North America</td>
+                            <td>Active 2025-26</td>
+                            <td><span class="relevance-high">HIGH</span></td>
+                            <td><a href="https://www.linkedin.com/in/steven-weber-p-e-7ab9937/" target="_blank">Profile</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mark Tomlinson</strong></td>
+                            <td><span class="role-tag role-commercial">Commercial &amp; Technology Leader</span></td>
+                            <td>Global — 12+ years at Ceres, data centre market</td>
+                            <td>12+ years at Ceres</td>
+                            <td><span class="relevance-med">MED</span></td>
+                            <td><a href="https://www.linkedin.com/in/mark-tomlinson-40951140/" target="_blank">Profile</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Oliver Postlethwaite</strong></td>
+                            <td><span class="role-tag role-commercial">Applications Strategy Director</span></td>
+                            <td>Global — attended Green Hydrogen Summit Oman, speaks at UK data centre panels</td>
+                            <td>Active 2025-26</td>
+                            <td><span class="relevance-med">MED</span></td>
+                            <td><a href="https://www.linkedin.com/in/oliver-postlethwaite-93060b31/" target="_blank">Profile</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bal Dosanjh</strong></td>
+                            <td><span class="role-tag role-commercial">Business Line Director</span></td>
+                            <td>UK — product/business line strategy</td>
+                            <td>Active 2025-26</td>
+                            <td><span class="relevance-med">MED</span></td>
+                            <td><a href="https://uk.linkedin.com/in/bdosanjh" target="_blank">Profile</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nick Lawrence</strong></td>
+                            <td><span class="role-tag role-leadership">Chief Product Officer</span></td>
+                            <td>Global — Endura platform launch, partner product strategy</td>
+                            <td>Active 2026</td>
+                            <td><span class="relevance-med">MED</span></td>
+                            <td><a href="https://uk.linkedin.com/in/nicklawrence2000" target="_blank">Profile</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Paul Saunders</strong></td>
+                            <td><span class="role-tag role-commercial">Commercial / Hiring</span></td>
+                            <td>UK — attended CERAWeek Houston, actively hiring</td>
+                            <td>Active 2026</td>
+                            <td><span class="relevance-med">MED</span></td>
+                            <td><a href="https://uk.linkedin.com/in/paul-saunders-818727a7" target="_blank">Profile</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tony Cochrane</strong></td>
+                            <td><span class="role-tag role-leadership">Former CCO</span></td>
+                            <td>Global — N. America, Europe, Asia, Brazil experience. Replaced by Filip Smeets</td>
+                            <td>Left ~2024</td>
+                            <td><span class="relevance-low">LOW (former)</span></td>
+                            <td><a href="https://ca.linkedin.com/in/tony-cochrane-b6214b1" target="_blank">Profile</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Piers Mulvey</strong></td>
+                            <td><span class="role-tag role-bd">Former Supply Chain Partnerships</span></td>
+                            <td>Left for ALTEN — led Delta &amp; DENSO supply chain partnerships</td>
+                            <td>Left ~2025</td>
+                            <td><span class="relevance-low">LOW (former)</span></td>
+                            <td><a href="https://uk.linkedin.com/in/piers-mulvey-85b6b818b" target="_blank">Profile</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 16px; padding: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;">
+                <strong style="color: var(--accent2);">Key Signal:</strong>
+                <span style="color: var(--text); font-size: 14px;"> <strong>Steven Weber</strong> is already in place as BD Director, North America — meaning Ceres is actively pursuing US OEM partners. This puts the US at <strong>Step 2-3</strong> in the deal signal sequence. Watch for: US conference appearances, Delaware/state subsidiary filings, and engineering hires in the US to gauge how close a deal is. <strong>Middle East</strong> remains the largest uncovered gap with no dedicated BD head (Saad Ashraf covers MENA from India alongside his India role).</span>
+            </div>
+        </div>
+
+        <!-- Conference Appearances -->
+        <div class="card" style="margin-bottom: 32px;">
+            <h2><span class="icon">&#127908;</span> Conference Appearances — Ceres Power Executives</h2>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+                Tracked from public sources. Regional appearances by BD staff are leading indicators of OEM deal development. CEO appearances signal strategic priority markets.
+            </p>
+            <div style="overflow-x: auto;">
+                <table class="people-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Event</th>
+                            <th>Location</th>
+                            <th>Ceres Speaker</th>
+                            <th>Title</th>
+                            <th>Signal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="white-space:nowrap;">May 2026</td>
+                            <td><strong>Japan Energy Summit &amp; Exhibition</strong></td>
+                            <td>Tokyo, Japan</td>
+                            <td>Phil Caldwell</td>
+                            <td><span class="role-tag role-leadership">CEO</span></td>
+                            <td><span class="relevance-high">Strategic speaker — Japan market (DENSO territory)</span></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap;">27 Apr 2026</td>
+                            <td><strong>25th Datacenter Summit &amp; Awards</strong></td>
+                            <td>India</td>
+                            <td>Subhasish Mukerjee</td>
+                            <td><span class="role-tag role-leadership">Chief Scientific Officer</span></td>
+                            <td><span class="relevance-high">Won "Innovation — New Initiatives" award</span></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap;">18 Apr 2026</td>
+                            <td><strong>Ceres Endura Launch &amp; Capital Markets Event</strong></td>
+                            <td>UK</td>
+                            <td>Phil Caldwell, Nick Lawrence</td>
+                            <td><span class="role-tag role-leadership">CEO</span> <span class="role-tag role-leadership">CPO</span></td>
+                            <td>Product launch + investor event</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap;">2026 (TBC)</td>
+                            <td><strong>European Fuel Cell Forum (EFCF)</strong></td>
+                            <td>Lucerne, Switzerland</td>
+                            <td>Subhasish Mukerjee</td>
+                            <td><span class="role-tag role-leadership">Chief Scientific Officer</span></td>
+                            <td><span class="relevance-high">Conference Chair</span></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap;">2026 (TBC)</td>
+                            <td><strong>Goldman Sachs Carbonomics Conference</strong></td>
+                            <td>—</td>
+                            <td>Phil Caldwell</td>
+                            <td><span class="role-tag role-leadership">CEO</span></td>
+                            <td>Investor-facing, data centre narrative</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap;">2025-26</td>
+                            <td><strong>The Advanced Materials Show</strong></td>
+                            <td>UK</td>
+                            <td>Subhasish Mukerjee</td>
+                            <td><span class="role-tag role-leadership">Chief Scientific Officer</span></td>
+                            <td>Technical speaker</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap;">2025</td>
+                            <td><strong>Japan Energy Event</strong></td>
+                            <td>Tokyo, Japan</td>
+                            <td>Phil Caldwell</td>
+                            <td><span class="role-tag role-leadership">CEO</span></td>
+                            <td>Strategic speaker — consecutive years in Japan</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap;">2025</td>
+                            <td><strong>Hydrogen Scotland Conference</strong></td>
+                            <td>Glasgow, UK</td>
+                            <td>Naoya Kodama</td>
+                            <td><span class="role-tag role-bd">BD, Japan</span></td>
+                            <td>BD presence at H2 events</td>
+                        </tr>
+                        <tr style="background: rgba(245,158,11,0.04);">
+                            <td style="white-space:nowrap;">Feb 2024</td>
+                            <td><strong>India Energy Week</strong></td>
+                            <td>Goa, India</td>
+                            <td>Phil Caldwell, Dipak Mistry, Saad Ashraf</td>
+                            <td><span class="role-tag role-leadership">CEO</span> <span class="role-tag role-bd">Strategic BD Dir</span> <span class="role-tag role-regional">India/MENA Head</span></td>
+                            <td><span class="relevance-high">CEO + full BD team — preceded Thermax deal</span></td>
+                        </tr>
+                        <tr style="background: rgba(245,158,11,0.04);">
+                            <td style="white-space:nowrap;">2023</td>
+                            <td><strong>Green Hydrogen Summit Oman</strong></td>
+                            <td>Muscat, Oman</td>
+                            <td>Oliver Postlethwaite, Saad Ashraf</td>
+                            <td><span class="role-tag role-commercial">Apps Strategy Dir</span> <span class="role-tag role-regional">India/MENA Head</span></td>
+                            <td><span class="relevance-med">MENA scouting signal</span></td>
+                        </tr>
+                        <tr style="background: rgba(245,158,11,0.04);">
+                            <td style="white-space:nowrap;">2023</td>
+                            <td><strong>US DOE Hydrogen Program Merit Review</strong></td>
+                            <td>United States</td>
+                            <td>Oliver Postlethwaite, Dipak Mistry</td>
+                            <td><span class="role-tag role-commercial">Apps Strategy Dir</span> <span class="role-tag role-bd">Strategic BD Dir</span></td>
+                            <td><span class="relevance-med">US government engagement</span></td>
+                        </tr>
+                        <tr style="background: rgba(79,140,255,0.04);">
+                            <td style="white-space:nowrap;">2023</td>
+                            <td><strong>Global Energy Awards</strong></td>
+                            <td>—</td>
+                            <td>Steven Weber</td>
+                            <td><span class="role-tag role-regional">BD Director, North America</span></td>
+                            <td><span class="relevance-high">Collected award — US BD presence since 2023</span></td>
+                        </tr>
+                        <tr style="background: rgba(79,140,255,0.04);">
+                            <td style="white-space:nowrap;">2023</td>
+                            <td><strong>Ammonia Energy Association Event</strong></td>
+                            <td>—</td>
+                            <td>Steven Weber</td>
+                            <td><span class="role-tag role-regional">BD Director, North America</span></td>
+                            <td>Presented on green ammonia / SOEC</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
+                <div style="flex:1; min-width: 280px; padding: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;">
+                    <strong style="color: var(--accent2);">Pattern — Pre-Deal:</strong>
+                    <span style="color: var(--text); font-size: 13px;"> India Energy Week 2024 featured CEO + full BD team in Goa — the Thermax partnership was formalised shortly after. Watch for the same pattern (CEO + BD team at a regional event) in the US or Middle East.</span>
+                </div>
+                <div style="flex:1; min-width: 280px; padding: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;">
+                    <strong style="color: var(--warn);">Gaps to Watch:</strong>
+                    <span style="color: var(--text); font-size: 13px;"> No confirmed Ceres attendance at <strong>CERAWeek</strong> (Houston), <strong>ADIPEC</strong> (Abu Dhabi), or <strong>Data Centre World</strong> (any region) in 2025-26. Appearing at any of these would be a strong geographic signal.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live News Feeds -->
+        <div class="card" style="margin-bottom: 32px;">
+            <h2>
+                <span class="icon">&#128225;</span> Live News Feeds
+                <span id="feedStatus" class="feed-status feed-loading" style="margin-left: auto;"><span class="pulse"></span> Loading...</span>
+            </h2>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+                Auto-fetched via RSS-to-JSON. Pulls latest Ceres Power news from Google News and Investegate on page load.
+            </p>
+            <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+                <button class="refresh-btn" onclick="fetchAllFeeds()">Refresh Feeds</button>
+                <button class="refresh-btn" onclick="filterFeed('all')">All</button>
+                <button class="refresh-btn" onclick="filterFeed('hire')">Hiring</button>
+                <button class="refresh-btn" onclick="filterFeed('partner')">Partnerships</button>
+                <button class="refresh-btn" onclick="filterFeed('region')">Regional</button>
+            </div>
+            <ul class="rss-feed" id="rssFeed">
+                <li class="rss-item" style="color: var(--muted); text-align: center; padding: 40px 0;">
+                    Fetching live feeds...
+                </li>
+            </ul>
+        </div>
+
+        <!-- Geographic Coverage Map -->
+        <div class="card" style="margin-bottom: 32px;">
+            <h2><span class="icon">&#127758;</span> Partner Geographic Coverage — Where Are the Gaps?</h2>
+            <div class="region-grid">
+                <div class="region-card">
+                    <div class="region-flag">&#127472;&#127479;</div>
+                    <div class="region-name">South Korea</div>
+                    <div class="region-partner">Doosan Fuel Cell</div>
+                    <span class="region-status status-covered">Covered</span>
+                </div>
+                <div class="region-card">
+                    <div class="region-flag">&#127464;&#127475;</div>
+                    <div class="region-name">China</div>
+                    <div class="region-partner">Weichai Power</div>
+                    <span class="region-status status-covered">Covered</span>
+                </div>
+                <div class="region-card">
+                    <div class="region-flag">&#127481;&#127484;</div>
+                    <div class="region-name">Taiwan / Global</div>
+                    <div class="region-partner">Delta Electronics</div>
+                    <span class="region-status status-covered">Covered</span>
+                </div>
+                <div class="region-card">
+                    <div class="region-flag">&#127468;&#127463;</div>
+                    <div class="region-name">UK &amp; Europe</div>
+                    <div class="region-partner">Centrica (deployer)</div>
+                    <span class="region-status status-covered">Covered</span>
+                </div>
+                <div class="region-card">
+                    <div class="region-flag">&#127470;&#127475;</div>
+                    <div class="region-name">India</div>
+                    <div class="region-partner">Thermax</div>
+                    <span class="region-status status-covered">Covered</span>
+                </div>
+                <div class="region-card">
+                    <div class="region-flag">&#127471;&#127477;</div>
+                    <div class="region-name">Japan</div>
+                    <div class="region-partner">DENSO (automotive)</div>
+                    <span class="region-status status-partial">Partial</span>
+                </div>
+                <div class="region-card" style="border-color: var(--warn);">
+                    <div class="region-flag">&#127482;&#127480;</div>
+                    <div class="region-name">United States</div>
+                    <div class="region-partner">No OEM partner yet — BD Director in place (Steven Weber)</div>
+                    <span class="region-status status-partial">Active BD</span>
+                </div>
+                <div class="region-card" style="border-color: var(--danger);">
+                    <div class="region-flag">&#127462;&#127466;</div>
+                    <div class="region-name">Middle East</div>
+                    <div class="region-partner">No partner</div>
+                    <span class="region-status status-gap">Key Gap</span>
+                </div>
+                <div class="region-card" style="border-color: var(--warn);">
+                    <div class="region-flag">&#127480;&#127468;</div>
+                    <div class="region-name">SE Asia</div>
+                    <div class="region-partner">No partner</div>
+                    <span class="region-status status-gap">Gap</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Finding Form -->
+        <div class="add-entry">
+            <h2>&#128221; Log a New Finding</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="entryDate">
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="entryType">
+                        <option value="hire">New Hire</option>
+                        <option value="job">Job Posting</option>
+                        <option value="event">Event / Conference</option>
+                        <option value="filing">Regulatory Filing</option>
+                        <option value="news">News / Rumour</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Region</label>
+                    <select id="entryRegion">
+                        <option value="US">United States</option>
+                        <option value="ME">Middle East</option>
+                        <option value="SEA">Southeast Asia</option>
+                        <option value="JP">Japan</option>
+                        <option value="EU">Europe</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Signal Strength (1-5)</label>
+                    <select id="entryStrength">
+                        <option value="1">1 — Weak hint</option>
+                        <option value="2">2 — Possible</option>
+                        <option value="3" selected>3 — Notable</option>
+                        <option value="4">4 — Strong</option>
+                        <option value="5">5 — Very strong</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>Description</label>
+                    <input type="text" id="entryDesc" placeholder="e.g. BD Director, North America role posted on LinkedIn...">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>Source URL (optional)</label>
+                    <input type="url" id="entryUrl" placeholder="https://...">
+                </div>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" onclick="addEntry()">Add Finding</button>
+                <button class="btn btn-export" onclick="exportCSV()">Export CSV</button>
+                <button class="btn btn-danger" onclick="clearAll()">Clear All</button>
+            </div>
+        </div>
+
+        <!-- Findings Log -->
+        <div class="card" style="margin-bottom: 32px;">
+            <h2><span class="icon">&#128203;</span> Findings Log</h2>
+            <div style="overflow-x: auto;">
+                <table class="log-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Region</th>
+                            <th>Description</th>
+                            <th>Strength</th>
+                            <th>Source</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="logBody">
+                        <tr id="emptyRow">
+                            <td colspan="7" style="text-align: center; color: var(--muted); padding: 40px;">
+                                No findings logged yet. Use the form above to record signals as you spot them.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Weekly Checklist -->
+        <div class="card" style="margin-bottom: 32px;">
+            <h2><span class="icon">&#9745;</span> Weekly Monitoring Checklist</h2>
+            <ul class="checklist" id="checklist">
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Check Ceres Power LinkedIn company page for new employee posts</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Search LinkedIn People: "Ceres Power" business development — filter by recent</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Review Ceres Power careers page for new regional BD roles</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Check Indeed / Glassdoor alerts for new Ceres Power postings</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Review Google Alert emails for hiring / partnership news</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Check RNS feed on LSE for any Ceres announcements</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Weekly: Check RNS director share dealings for insider buying</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Weekly: Check FCA short position disclosures / ShortTracker for CWR changes</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Monthly: Check Companies House for new subsidiary filings</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Monthly: Check upcoming energy conference exhibitor/speaker lists for Ceres</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Monthly: Google Patents — new Ceres Power filings in US, GCC, or ASEAN patent offices</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Monthly: WIPO Brand DB — "Ceres Endura" or "Ceres Power" trademark filings in new jurisdictions</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Monthly: Google Scholar — new co-publications by Ceres scientists with external institutions</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Monthly: Check SBIR.gov / Grants.gov / UKRI for SOFC-related grant awards involving Ceres or target OEMs</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Bi-weekly: Scan GE Vernova jobs for new SOFC roles — currently 7+ open, track if count grows (strongest US signal)</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Bi-weekly: Scan Cummins/Accelera jobs for SOFC roles — Malta NY line already running, watch for scale-up hiring</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Bi-weekly: Scan Caterpillar, Eaton, ACWA Power job boards for first "SOFC" or "solid oxide" posting (none currently)</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Monthly: Check USPTO for new Ceres Power filings — manufacturing process or system design patents signal imminent US partner deal</span>
+                </li>
+            </ul>
+            <div style="margin-top: 12px;">
+                <button class="btn btn-export" onclick="resetChecklist()">Reset Checklist</button>
+            </div>
+        </div>
+
+        <!-- Non-News Intelligence Sources -->
+        <div class="card" style="margin-bottom: 32px;">
+            <h2><span class="icon">&#128373;</span> Non-News Intelligence Sources — OEM Deal Detection</h2>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+                These signals appear <strong>before</strong> news breaks. Ordered by how early they typically surface relative to a deal announcement.
+            </p>
+
+            <!-- Earliest Signals -->
+            <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 12px; margin-top: 8px;">EARLIEST SIGNALS (12-18 months before announcement)</h3>
+
+            <div class="alert-generator">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px;">1. Patent Filings in New Jurisdictions</div>
+                    <div style="font-size: 13px; color: var(--muted);">If Ceres files patents with USPTO, GCC IP Office, or ASEAN patent offices, they're protecting IP ahead of a licensing deal in that region. Set up a Google Patents alert.</div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <a href="https://patents.google.com/?assignee=Ceres+Power&sort=new" target="_blank" class="btn-sm btn-create">Google Patents</a>
+                    <a href="https://worldwide.espacenet.com/searchResults?submitted=true&locale=en_EP&DB=EPODOC&ST=advanced&TI=&AB=&PN=&AP=&PR=&PD=&PA=ceres+power&IN=&CPC=&IC=" target="_blank" class="btn-sm btn-copy">Espacenet</a>
+                </div>
+            </div>
+
+            <div class="alert-generator">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px;">2. Trademark Filings — "Ceres Endura" in New Offices</div>
+                    <div style="font-size: 13px; color: var(--muted);">If "Ceres Endura" or "Ceres Power" trademarks are registered with USPTO, GCC, or ASEAN trademark offices, it signals where they intend to commercialise.</div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <a href="https://branddb.wipo.int/en/quicksearch?by=brandName&v=ceres+power" target="_blank" class="btn-sm btn-create">WIPO Brand DB</a>
+                    <a href="https://tmsearch.uspto.gov/" target="_blank" class="btn-sm btn-copy">USPTO TESS</a>
+                </div>
+            </div>
+
+            <div class="alert-generator">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px;">3. Subsidiary / Entity Incorporations</div>
+                    <div style="font-size: 13px; color: var(--muted);">A "Ceres Power Inc." in Delaware or a KSA entity would precede a deal by months. Check UK Companies House for new subsidiary references and target-country registries.</div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <a href="https://find-and-update.company-information.service.gov.uk/search?q=ceres+power" target="_blank" class="btn-sm btn-create">Companies House</a>
+                    <a href="https://www.sec.gov/cgi-bin/browse-edgar?company=ceres+power&CIK=&type=&dateb=&owner=include&count=40&search_text=&action=getcompany" target="_blank" class="btn-sm btn-copy">SEC EDGAR</a>
+                </div>
+            </div>
+
+            <!-- Mid-Stage Signals -->
+            <h3 style="font-size: 14px; color: var(--warn); margin-bottom: 12px; margin-top: 24px;">MID-STAGE SIGNALS (6-12 months before announcement)</h3>
+
+            <div class="alert-generator">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px;">4. Technical Job Postings in a Region</div>
+                    <div style="font-size: 13px; color: var(--muted);">BD hires come first, but process engineers, manufacturing engineers, or quality engineers hired in a specific country means a partner factory setup is underway.</div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <a href="https://www.linkedin.com/company/ceres-power/jobs/" target="_blank" class="btn-sm btn-create">LinkedIn Jobs</a>
+                    <a href="https://www.ceres.tech/careers/" target="_blank" class="btn-sm btn-copy">Ceres Careers</a>
+                </div>
+            </div>
+
+            <div class="alert-generator">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px;">5. Potential Partner's Own Signals</div>
+                    <div style="font-size: 13px; color: var(--muted);">Monitor the <em>other side</em>. If Caterpillar, GE Vernova, Eaton, or ACWA Power post jobs mentioning "solid oxide", "SOFC", or "fuel cell", or file patents in that space, they may be preparing to receive a Ceres license. Most overlooked signal.</div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <a href="https://www.google.com/alerts?q=%22solid+oxide%22+OR+%22SOFC%22+Caterpillar+OR+%22GE+Vernova%22+OR+Eaton+OR+Cummins+OR+%22ACWA+Power%22" target="_blank" class="btn-sm btn-create">Create Alert</a>
+                </div>
+            </div>
+
+            <div class="alert-generator">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px;">6. Supply Chain / Import-Export Data</div>
+                    <div style="font-size: 13px; color: var(--muted);">Customs records can show if Ceres is shipping prototype stacks, test equipment, or materials to a new country. Public in many jurisdictions.</div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <a href="https://www.importgenius.com/" target="_blank" class="btn-sm btn-copy">ImportGenius (Paid)</a>
+                    <a href="https://panjiva.com/" target="_blank" class="btn-sm btn-copy">Panjiva (Paid)</a>
+                </div>
+            </div>
+
+            <div class="alert-generator">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px;">7. Government Grants &amp; Subsidies</div>
+                    <div style="font-size: 13px; color: var(--muted);">If Ceres or a potential partner applies for DOE funding (US), Innovate UK, or Gulf sovereign fund grants involving SOFC technology, these are often published in grant databases.</div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <a href="https://www.sbir.gov/sbirsearch/award/all?f%5B0%5D=im_field_agencies%3A105755&f%5B1%5D=&f%5B2%5D=&s=ceres" target="_blank" class="btn-sm btn-create">SBIR.gov</a>
+                    <a href="https://gtr.ukri.org/search/project?term=ceres+power" target="_blank" class="btn-sm btn-copy">UKRI Gateway</a>
+                    <a href="https://www.grants.gov/search-grants?keywords=solid+oxide+fuel+cell" target="_blank" class="btn-sm btn-copy">Grants.gov</a>
+                </div>
+            </div>
+
+            <div class="alert-generator">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px;">8. Academic Co-Publications</div>
+                    <div style="font-size: 13px; color: var(--muted);">If Ceres scientists co-author papers with researchers at a company or institution in a new geography, it signals a technical evaluation relationship. Often the earliest technical engagement.</div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <a href="https://scholar.google.com/scholar?q=%22ceres+power%22&as_ylo=2025" target="_blank" class="btn-sm btn-create">Google Scholar</a>
+                </div>
+            </div>
+
+            <!-- Late-Stage Signals -->
+            <h3 style="font-size: 14px; color: var(--danger); margin-bottom: 12px; margin-top: 24px;">LATE-STAGE SIGNALS (1-6 months before announcement)</h3>
+
+            <div class="alert-generator">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px;">9. Director Share Dealings (Insider Buying)</div>
+                    <div style="font-size: 13px; color: var(--muted);">Heavy insider buying with no obvious catalyst is notable. Published on LSE RNS under "Director/PDMR Shareholding". Executives buying before a material announcement is a strong signal.</div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <a href="https://www.londonstockexchange.com/news?tab=news-explorer&id=CWR" target="_blank" class="btn-sm btn-create">LSE RNS Feed</a>
+                    <a href="https://www.investegate.co.uk/index.php?cid=86&id=CWR" target="_blank" class="btn-sm btn-copy">Investegate</a>
+                </div>
+            </div>
+
+            <div class="alert-generator">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px;">10. Short Interest Changes</div>
+                    <div style="font-size: 13px; color: var(--muted);">A sharp reduction in short interest means shorts are covering ahead of expected good news. FCA publishes net short positions above 0.5% threshold for all UK-listed stocks.</div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <a href="https://www.fca.org.uk/publication/data/short-positions-daily-update.xlsx" target="_blank" class="btn-sm btn-create">FCA Short Positions</a>
+                    <a href="https://shorttracker.co.uk/company/CWR/" target="_blank" class="btn-sm btn-copy">ShortTracker</a>
+                </div>
+            </div>
+
+            <div class="alert-generator">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px;">11. Regulatory Pre-Approvals &amp; Planning Permits</div>
+                    <div style="font-size: 13px; color: var(--muted);">Environmental permits, grid connection applications, or building permits filed by a potential OEM partner for a "fuel cell manufacturing facility". These are public records in local planning authorities.</div>
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <a href="https://www.google.com/alerts?q=%22fuel+cell+manufacturing%22+OR+%22SOFC+facility%22+permit+OR+planning+OR+approval" target="_blank" class="btn-sm btn-create">Create Alert</a>
+                </div>
+            </div>
+
+            <!-- Summary Table -->
+            <h3 style="font-size: 14px; color: var(--text); margin-bottom: 12px; margin-top: 24px;">Quick Reference — Effort vs Lead Time</h3>
+            <div style="overflow-x: auto;">
+                <table class="people-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Effort</th>
+                            <th>Lead Time</th>
+                            <th>Cost</th>
+                            <th>Frequency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Google Patents alerts</td>
+                            <td><span style="color: var(--accent2);">Low</span></td>
+                            <td>12-18 months</td>
+                            <td>Free</td>
+                            <td>Monthly</td>
+                        </tr>
+                        <tr>
+                            <td>WIPO trademark search</td>
+                            <td><span style="color: var(--accent2);">Low</span></td>
+                            <td>12+ months</td>
+                            <td>Free</td>
+                            <td>Monthly</td>
+                        </tr>
+                        <tr>
+                            <td>Companies House subsidiaries</td>
+                            <td><span style="color: var(--accent2);">Low</span></td>
+                            <td>6-12 months</td>
+                            <td>Free</td>
+                            <td>Monthly</td>
+                        </tr>
+                        <tr>
+                            <td>Target OEM job boards for "SOFC"</td>
+                            <td><span style="color: var(--warn);">Medium</span></td>
+                            <td>6-12 months</td>
+                            <td>Free</td>
+                            <td>Bi-weekly</td>
+                        </tr>
+                        <tr>
+                            <td>Google Scholar co-publications</td>
+                            <td><span style="color: var(--accent2);">Low</span></td>
+                            <td>6-12 months</td>
+                            <td>Free</td>
+                            <td>Monthly</td>
+                        </tr>
+                        <tr>
+                            <td>Government grants databases</td>
+                            <td><span style="color: var(--warn);">Medium</span></td>
+                            <td>6-12 months</td>
+                            <td>Free</td>
+                            <td>Monthly</td>
+                        </tr>
+                        <tr>
+                            <td>Import/export data</td>
+                            <td><span style="color: var(--warn);">Medium</span></td>
+                            <td>6-12 months</td>
+                            <td>Paid</td>
+                            <td>Monthly</td>
+                        </tr>
+                        <tr>
+                            <td>FCA short position disclosures</td>
+                            <td><span style="color: var(--accent2);">Low</span></td>
+                            <td>1-3 months</td>
+                            <td>Free</td>
+                            <td>Weekly</td>
+                        </tr>
+                        <tr>
+                            <td>RNS director dealings</td>
+                            <td><span style="color: var(--accent2);">Low</span></td>
+                            <td>1-3 months</td>
+                            <td>Free</td>
+                            <td>Weekly</td>
+                        </tr>
+                        <tr>
+                            <td>Planning permits / regulatory filings</td>
+                            <td><span style="color: var(--danger);">High</span></td>
+                            <td>1-6 months</td>
+                            <td>Free</td>
+                            <td>Monthly</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- US Patent Filings -->
+        <div class="card" style="margin-bottom: 32px;">
+            <h2><span class="icon">&#128220;</span> Ceres Power — US Patent Filings (USPTO)</h2>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+                Active US patent protection signals Ceres considers the US market worth defending IP in. An uptick in manufacturing process or system design filings would suggest a US partner is about to receive the recipes to build stacks domestically.
+                Filed under two assignees: <strong>Ceres Power Limited</strong> and <strong>Ceres Intellectual Property Company Limited</strong>.
+            </p>
+            <div style="overflow-x: auto;">
+                <table class="people-table">
+                    <thead>
+                        <tr>
+                            <th>Patent Number</th>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Signal Relevance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: rgba(79,140,255,0.04);">
+                            <td style="white-space:nowrap;"><a href="https://patents.google.com/patent/US20250253377A1/en" target="_blank" style="color: var(--accent);">US20250253377A1</a></td>
+                            <td><strong>Electrochemical Cell Assembly with Insert</strong></td>
+                            <td><span class="role-tag role-bd">Manufacturing</span></td>
+                            <td><span style="color: var(--warn); font-weight: 600;">PENDING</span></td>
+                            <td style="white-space:nowrap;">Assigned Oct 2024<br>Published Aug 2025</td>
+                            <td><span class="relevance-high">Most recent US filing — cell assembly manufacturing IP</span></td>
+                        </tr>
+                        <tr style="background: rgba(79,140,255,0.04);">
+                            <td style="white-space:nowrap;"><a href="https://patents.google.com/patent/US12003007B2/en" target="_blank" style="color: var(--accent);">US12003007B2</a></td>
+                            <td><strong>Fuel Cell System with Reformer and Heat Exchangers</strong></td>
+                            <td><span class="role-tag role-commercial">System Design</span></td>
+                            <td><span style="color: var(--accent2); font-weight: 600;">GRANTED</span></td>
+                            <td style="white-space:nowrap;">Granted 2024</td>
+                            <td><span class="relevance-high">Full system-level IP — the product design a US partner would deploy</span></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap;"><a href="https://patents.google.com/patent/US20230411658A1/en" target="_blank" style="color: var(--accent);">US20230411658A1</a></td>
+                            <td><strong>SOFC System Steam Generator</strong></td>
+                            <td><span class="role-tag role-commercial">System Design</span></td>
+                            <td><span style="color: var(--warn); font-weight: 600;">PENDING</span></td>
+                            <td style="white-space:nowrap;">Filed ~2023</td>
+                            <td><span class="relevance-med">Balance-of-plant component IP</span></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap;"><a href="https://patents.google.com/patent/US10008726B2/en" target="_blank" style="color: var(--accent);">US10008726B2</a></td>
+                            <td><strong>Metal Supported Solid Oxide Fuel Cell — Manufacturing Process</strong></td>
+                            <td><span class="role-tag role-bd">Manufacturing</span></td>
+                            <td><span style="color: var(--accent2); font-weight: 600;">GRANTED</span></td>
+                            <td style="white-space:nowrap;">Filed Jan 2016</td>
+                            <td><span class="relevance-high">Core SteelCell manufacturing process — NiO, CuO, rare-earth ceria on steel substrate</span></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap;"><a href="https://patents.google.com/patent/US6794075B2/en" target="_blank" style="color: var(--accent);">US6794075B2</a></td>
+                            <td><strong>Fuel Cells — Ferritic Stainless Steel Substrate</strong></td>
+                            <td><span class="role-tag role-bd">Manufacturing</span></td>
+                            <td><span style="color: var(--muted); font-weight: 600;">EXPIRED</span></td>
+                            <td style="white-space:nowrap;">Filed Oct 2001<br>Granted Sep 2004</td>
+                            <td><span class="relevance-low">Original SteelCell foundation patent (lifetime expired)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
+                <div style="flex:1; min-width: 280px; padding: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;">
+                    <strong style="color: var(--accent2);">Key Insight:</strong>
+                    <span style="color: var(--text); font-size: 13px;"> 17% of Ceres' global granted patents are US grants. The most recent filing (Oct 2024) covers cell assembly manufacturing — exactly the type of IP a US OEM partner would need licensed. Combined with Steven Weber as US BD Director and active conference presence, the IP groundwork for a US deal is being laid.</span>
+                </div>
+                <div style="flex:1; min-width: 280px; padding: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;">
+                    <strong style="color: var(--warn);">What to Alert On:</strong>
+                    <span style="color: var(--text); font-size: 13px;"> A sudden uptick in US filings covering <strong>manufacturing processes</strong> or <strong>system designs</strong> would suggest Ceres is about to hand a US partner the recipes to build stacks domestically. Monitor monthly via the links below.</span>
+                </div>
+            </div>
+            <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
+                <a href="https://patents.justia.com/assignee/ceres-power-limited" target="_blank" class="btn-sm btn-create">Justia — Ceres Power Ltd</a>
+                <a href="https://patents.justia.com/assignee/ceres-intellectual-property-company-limited" target="_blank" class="btn-sm btn-copy">Justia — Ceres IP Co</a>
+                <a href="https://patents.google.com/?assignee=Ceres+Power&country=US&sort=new" target="_blank" class="btn-sm btn-copy">Google Patents — US</a>
+                <a href="https://ppubs.uspto.gov/pubwebapp/" target="_blank" class="btn-sm btn-copy">USPTO Public Search</a>
+            </div>
+        </div>
+
+        <!-- Potential US Partners Watchlist -->
+        <div class="card" style="margin-bottom: 32px;">
+            <h2><span class="icon">&#127482;&#127480;</span> Potential US OEM Partner Watchlist — SOFC Hiring Tracker</h2>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+                Monitor these companies for SOFC-specific hiring, fuel cell announcements, and capex guidance mentioning distributed power. A target OEM hiring ceramic process engineers, stack assembly specialists, or electrochemists is the strongest forward indicator they are preparing to receive (or build) SOFC capability.
+            </p>
+
+            <!-- GE Vernova — Hot -->
+            <div style="background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 20px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <span style="font-size: 20px;">&#128268;</span>
+                        <strong style="font-size: 16px; color: #fff; margin-left: 8px;">GE Vernova</strong>
+                        <span style="font-size: 12px; padding: 3px 10px; border-radius: 10px; font-weight: 600; background: rgba(239,68,68,0.15); color: var(--danger); margin-left: 8px;">7+ SOFC ROLES OPEN</span>
+                    </div>
+                    <span style="font-size: 12px; color: var(--danger); font-weight: 600;">HIGHEST SIGNAL</span>
+                </div>
+                <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Gas turbines sold out to 2028-30. Building full in-house SOFC R&D capability — could be preparing to license Ceres tech or compete with Bloom Energy.</p>
+                <div style="overflow-x: auto;">
+                    <table class="people-table" style="margin-bottom: 0;">
+                        <thead>
+                            <tr>
+                                <th>Role</th>
+                                <th>Speciality</th>
+                                <th>Why It Matters</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Lead Engineer — SOFC</td>
+                                <td><span class="role-tag role-bd">Thermal Spray, Advanced Manufacturing</span></td>
+                                <td><span class="relevance-high">Direct stack manufacturing — thermal spray = cell deposition</span></td>
+                                <td><a href="https://www.tealhq.com/job/lead-engineer-solid-oxide-fuel-cells-thermal-spray-advanced-manufacturing_3de1b964-73e4-4610-98f3-20f755d96606" target="_blank" style="color: var(--accent);">View</a></td>
+                            </tr>
+                            <tr>
+                                <td>Lead Specialist — SOFC</td>
+                                <td><span class="role-tag role-bd">Fabrication, Stack Assembly & Testing</span></td>
+                                <td><span class="relevance-high">Building and testing full SOFC stacks</span></td>
+                                <td><a href="https://www.tealhq.com/job/lead-specialist-solid-oxide-fuel-cells-fabrication-stacks-assembly-and-testing_ef046708-c1ca-4ec3-8b08-16261b4797b6" target="_blank" style="color: var(--accent);">View</a></td>
+                            </tr>
+                            <tr>
+                                <td>Senior Research Engineer — SOFC/SOEC</td>
+                                <td><span class="role-tag role-commercial">Electrochemistry System</span></td>
+                                <td><span class="relevance-high">Dual SOFC/SOEC — same as Ceres' offering</span></td>
+                                <td><a href="https://www.tealhq.com/job/senior-research-engineer-solid-oxide-fuel-electrolyzer-cells-electrochemistry-system_9705da4e-05ca-4b9d-a17b-e97c9d9d8a5d" target="_blank" style="color: var(--accent);">View</a></td>
+                            </tr>
+                            <tr>
+                                <td>Research Engineer — SOFC</td>
+                                <td><span class="role-tag role-commercial">Control, Automation, Robotics</span></td>
+                                <td>Production line automation — scaling up</td>
+                                <td><a href="https://www.tealhq.com/job/research-engineer-solid-oxide-fuel-cells-control-automation-and-robotics_b38daf0c-fc9e-43d4-8809-1ca5fd2c8aec" target="_blank" style="color: var(--accent);">View</a></td>
+                            </tr>
+                            <tr>
+                                <td>Research Engineer — SOFC</td>
+                                <td><span class="role-tag role-regional">Post-Process, Quality Control</span></td>
+                                <td>Manufacturing quality — production readiness</td>
+                                <td><a href="https://www.tealhq.com/job/research-engineer-solid-oxide-fuel-cells-post-process-development-operation-quality-control_bcc029c0-9360-4c43-9bca-2c56461268a7" target="_blank" style="color: var(--accent);">View</a></td>
+                            </tr>
+                            <tr>
+                                <td>Engineer — SOFC</td>
+                                <td><span class="role-tag role-commercial">Testing, Electrical & Instrumentation</span></td>
+                                <td>Cell/stack performance validation</td>
+                                <td><a href="https://www.tealhq.com/job/engineer-solid-oxide-fuel-cells-testing-electrical-instrumentation-electrochemistry_bf693f70-eb1f-4fc4-a99d-74c11b2122fa" target="_blank" style="color: var(--accent);">View</a></td>
+                            </tr>
+                            <tr>
+                                <td>Research Engineer — SOFC</td>
+                                <td><span class="role-tag role-commercial">Testing, Electrochemistry</span></td>
+                                <td>Electrochemical performance analysis</td>
+                                <td><a href="https://www.tealhq.com/job/research-engineer-solid-oxide-fuel-cells-testing-electrical-instrumentation-electrochemistry_0a9d10db-8d0e-49be-bae0-0a9ed1f6cf3d" target="_blank" style="color: var(--accent);">View</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="https://www.ge.com/news/taxonomy/term/1318" target="_blank" class="btn-sm btn-create">GE SOFC News</a>
+                    <a href="https://www.google.com/alerts?q=%22GE+Vernova%22+%22solid+oxide%22+OR+%22SOFC%22+OR+%22fuel+cell%22" target="_blank" class="btn-sm btn-copy">Create Alert</a>
+                </div>
+            </div>
+
+            <!-- Cummins — Warm -->
+            <div style="background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.3); border-radius: 8px; padding: 20px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <span style="font-size: 20px;">&#9889;</span>
+                        <strong style="font-size: 16px; color: #fff; margin-left: 8px;">Cummins (Accelera)</strong>
+                        <span style="font-size: 12px; padding: 3px 10px; border-radius: 10px; font-weight: 600; background: rgba(245,158,11,0.15); color: var(--warn); margin-left: 8px;">SOFC LINE RUNNING</span>
+                    </div>
+                    <span style="font-size: 12px; color: var(--warn); font-weight: 600;">STRONG SIGNAL</span>
+                </div>
+                <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Already has SOFC manufacturing line in Malta, NY with cathode screen printing. $4.6m in DOE grants for SOFC. Hiring Senior Quality Engineer — SOFC. Has in-house capability — could be licensee or competitor.</p>
+                <div style="font-size: 13px; color: var(--text); margin-bottom: 12px;">
+                    <strong>Key facts:</strong> SOFC factory in Malta, NY | Screen printing line operational | $4.6m federal SOFC grants | 160,000+ employees globally
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="https://accelera.cummins.jobs/" target="_blank" class="btn-sm btn-create">Accelera Jobs</a>
+                    <a href="https://www.glassdoor.com/Jobs/Cummins-fuel-cell-engineer-Jobs-EI_IE187.0,7_KO8,26.htm" target="_blank" class="btn-sm btn-copy">Glassdoor SOFC</a>
+                    <a href="https://www.google.com/alerts?q=%22Cummins%22+OR+%22Accelera%22+%22solid+oxide%22+OR+%22SOFC%22" target="_blank" class="btn-sm btn-copy">Create Alert</a>
+                </div>
+            </div>
+
+            <!-- Caterpillar — Cool -->
+            <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <span style="font-size: 20px;">&#128679;</span>
+                        <strong style="font-size: 16px; color: #fff; margin-left: 8px;">Caterpillar</strong>
+                        <span style="font-size: 12px; padding: 3px 10px; border-radius: 10px; font-weight: 600; background: rgba(79,140,255,0.15); color: var(--accent); margin-left: 8px;">NO SOFC ROLES</span>
+                    </div>
+                    <span style="font-size: 12px; color: var(--muted); font-weight: 600;">WEAK SIGNAL</span>
+                </div>
+                <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Mentions fuel cells in intern descriptions but no dedicated SOFC engineers. Competing in data centre power via gas turbines. Would need to hire an entire SOFC team from scratch — watch for first SOFC-specific posting.</p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="https://careers.caterpillar.com/en/jobs/" target="_blank" class="btn-sm btn-copy">CAT Careers</a>
+                    <a href="https://www.google.com/alerts?q=%22Caterpillar%22+%22solid+oxide%22+OR+%22SOFC%22+OR+%22fuel+cell+manufacturing%22" target="_blank" class="btn-sm btn-copy">Create Alert</a>
+                </div>
+            </div>
+
+            <!-- Eaton — Cool -->
+            <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <span style="font-size: 20px;">&#9879;</span>
+                        <strong style="font-size: 16px; color: #fff; margin-left: 8px;">Eaton</strong>
+                        <span style="font-size: 12px; padding: 3px 10px; border-radius: 10px; font-weight: 600; background: rgba(79,140,255,0.15); color: var(--accent); margin-left: 8px;">NO SOFC ROLES</span>
+                    </div>
+                    <span style="font-size: 12px; color: var(--muted); font-weight: 600;">WEAK SIGNAL</span>
+                </div>
+                <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Focused on hydrogen balance-of-plant: recirculation blowers (TVS), H2 engine valves. Member of Hydrogen Europe. No SOFC stack manufacturing capability or hiring. More likely a system integrator than a stack manufacturer.</p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="https://eaton.eightfold.ai/careers" target="_blank" class="btn-sm btn-copy">Eaton Careers</a>
+                    <a href="https://www.google.com/alerts?q=%22Eaton%22+%22solid+oxide%22+OR+%22SOFC%22+OR+%22fuel+cell+stack%22" target="_blank" class="btn-sm btn-copy">Create Alert</a>
+                </div>
+            </div>
+
+            <!-- Bloom Energy — Competitor -->
+            <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <span style="font-size: 20px;">&#128267;</span>
+                        <strong style="font-size: 16px; color: #fff; margin-left: 8px;">Bloom Energy</strong>
+                        <span style="font-size: 12px; padding: 3px 10px; border-radius: 10px; font-weight: 600; background: rgba(168,85,247,0.15); color: #a855f7; margin-left: 8px;">COMPETITOR</span>
+                    </div>
+                    <span style="font-size: 12px; color: #a855f7; font-weight: 600;">WATCH</span>
+                </div>
+                <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Currently the sole SOFC provider to US data centres. Uses its own proprietary SOFC (not Ceres tech). M&A or licensing crossover possible but unlikely — primarily a competitive benchmark.</p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="https://www.google.com/alerts?q=%22Bloom+Energy%22+%22Ceres+Power%22+OR+%22partnership%22+OR+%22acquisition%22" target="_blank" class="btn-sm btn-copy">Create Alert</a>
+                </div>
+            </div>
+
+            <div style="padding: 14px; background: var(--bg); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px;">
+                <strong style="color: var(--danger);">Top Finding (Jun 2026):</strong>
+                <span style="color: var(--text); font-size: 13px;"> <strong>GE Vernova is hiring 7+ SOFC engineers</strong> covering the entire stack manufacturing pipeline — from thermal spray deposition to electrochemistry to fabrication and assembly. This is the exact hiring profile a company would need to either build SOFC in-house or prepare to receive a Ceres licence. Combined with gas turbine lead times extending to 2028-30, GE Vernova has the strongest observable pre-deal signals of any US target. <strong>Cummins/Accelera</strong> already has a running SOFC line in Malta, NY — further along but may be building proprietary capability rather than licensing.</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            Ceres Power BD Hire Monitor &mdash; Built for investment research purposes only. Not financial advice.<br>
+            Data sourced from public information. Check sources directly for accuracy.
+        </div>
+    </div>
+
+    <script>
+        // Initialize
+        const STORAGE_KEY = 'ceres_bd_monitor';
+
+        function getEntries() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            } catch { return []; }
+        }
+
+        function saveEntries(entries) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+        }
+
+        function getTypeLabel(type) {
+            const map = { hire: 'New Hire', job: 'Job Posting', event: 'Event', filing: 'Filing', news: 'News' };
+            return map[type] || type;
+        }
+
+        function getTypeClass(type) {
+            return 'type-' + type;
+        }
+
+        function renderStrength(n) {
+            let html = '<div class="signal-strength">';
+            for (let i = 1; i <= 5; i++) {
+                const cls = i <= n ? (n >= 4 ? 'on' : 'warn') : '';
+                html += `<div class="signal-bar ${cls}"></div>`;
+            }
+            html += '</div>';
+            return html;
+        }
+
+        function renderLog() {
+            const entries = getEntries();
+            const body = document.getElementById('logBody');
+
+            if (entries.length === 0) {
+                body.innerHTML = `<tr id="emptyRow"><td colspan="7" style="text-align:center;color:var(--muted);padding:40px;">No findings logged yet. Use the form above to record signals as you spot them.</td></tr>`;
+                return;
+            }
+
+            entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            body.innerHTML = entries.map((e, i) => `
+                <tr>
+                    <td style="white-space:nowrap;">${e.date}</td>
+                    <td><span class="log-type ${getTypeClass(e.type)}">${getTypeLabel(e.type)}</span></td>
+                    <td>${e.region}</td>
+                    <td>${escapeHtml(e.desc)}</td>
+                    <td>${renderStrength(e.strength)}</td>
+                    <td>${e.url ? `<a href="${escapeHtml(e.url)}" target="_blank" style="color:var(--accent);font-size:13px;">Link</a>` : '—'}</td>
+                    <td><button onclick="deleteEntry(${i})" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px;" title="Delete">&times;</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function addEntry() {
+            const date = document.getElementById('entryDate').value;
+            const type = document.getElementById('entryType').value;
+            const region = document.getElementById('entryRegion').value;
+            const strength = parseInt(document.getElementById('entryStrength').value);
+            const desc = document.getElementById('entryDesc').value.trim();
+            const url = document.getElementById('entryUrl').value.trim();
+
+            if (!date || !desc) {
+                alert('Please fill in at least the date and description.');
+                return;
+            }
+
+            const entries = getEntries();
+            entries.push({ date, type, region, strength, desc, url });
+            saveEntries(entries);
+            renderLog();
+
+            document.getElementById('entryDesc').value = '';
+            document.getElementById('entryUrl').value = '';
+            updateLastChecked();
+        }
+
+        function deleteEntry(index) {
+            const entries = getEntries();
+            entries.splice(index, 1);
+            saveEntries(entries);
+            renderLog();
+        }
+
+        function clearAll() {
+            if (confirm('Delete all findings? This cannot be undone.')) {
+                saveEntries([]);
+                renderLog();
+            }
+        }
+
+        function exportCSV() {
+            const entries = getEntries();
+            if (entries.length === 0) {
+                alert('No entries to export.');
+                return;
+            }
+            const header = 'Date,Type,Region,Description,Strength,URL\n';
+            const rows = entries.map(e =>
+                `"${e.date}","${getTypeLabel(e.type)}","${e.region}","${e.desc.replace(/"/g, '""')}",${e.strength},"${e.url || ''}"`
+            ).join('\n');
+
+            const blob = new Blob([header + rows], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ceres_bd_monitor_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function toggleCheck(el) {
+            el.classList.toggle('checked');
+            const label = el.nextElementSibling;
+            label.classList.toggle('done');
+        }
+
+        function resetChecklist() {
+            document.querySelectorAll('.check-box').forEach(el => {
+                el.classList.remove('checked');
+                el.nextElementSibling.classList.remove('done');
+            });
+        }
+
+        function updateLastChecked() {
+            const now = new Date();
+            document.getElementById('lastChecked').textContent = now.toLocaleDateString('en-GB', {
+                day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+        }
+
+        // ==========================================
+        // LIVE RSS FEEDS (via public RSS-to-JSON APIs)
+        // ==========================================
+        const RSS_FEEDS = [
+            {
+                name: 'Google News',
+                url: 'https://news.google.com/rss/search?q=%22Ceres+Power%22&hl=en-GB&gl=GB&ceid=GB:en',
+                icon: 'GN'
+            },
+            {
+                name: 'Yahoo Finance',
+                url: 'https://feeds.finance.yahoo.com/rss/2.0/headline?s=CWR.L&region=GB&lang=en-GB',
+                icon: 'YF'
+            }
+        ];
+
+        const HIRE_KEYWORDS = ['hire', 'hiring', 'appointed', 'appointment', 'joins', 'joined', 'recruit', 'vacancy', 'role', 'position', 'director', 'head of', 'manager'];
+        const PARTNER_KEYWORDS = ['partner', 'partnership', 'license', 'licence', 'licensing', 'OEM', 'collaboration', 'agreement', 'deal', 'signing', 'MOU', 'memorandum'];
+        const REGION_KEYWORDS = ['america', 'united states', 'US market', 'middle east', 'gulf', 'saudi', 'UAE', 'qatar', 'southeast asia', 'singapore', 'vietnam', 'indonesia', 'houston', 'texas', 'delaware'];
+
+        let allFeedItems = [];
+        let currentFilter = 'all';
+
+        function classifyItem(title) {
+            const t = title.toLowerCase();
+            const tags = [];
+            if (HIRE_KEYWORDS.some(k => t.includes(k))) tags.push('hire');
+            if (PARTNER_KEYWORDS.some(k => t.includes(k))) tags.push('partner');
+            if (REGION_KEYWORDS.some(k => t.includes(k))) tags.push('region');
+            return tags;
+        }
+
+        function renderFeedItems(items, filter) {
+            const feed = document.getElementById('rssFeed');
+            let filtered = items;
+            if (filter && filter !== 'all') {
+                filtered = items.filter(item => item.tags.includes(filter));
+            }
+
+            if (filtered.length === 0) {
+                feed.innerHTML = `<li class="rss-item" style="color: var(--muted); text-align: center; padding: 40px 0;">
+                    ${filter !== 'all' ? 'No items match this filter. Try "All".' : 'No feed items found.'}
+                </li>`;
+                return;
+            }
+
+            feed.innerHTML = filtered.slice(0, 30).map(item => {
+                const tagHtml = item.tags.map(t => {
+                    const colors = { hire: 'var(--accent)', partner: '#a855f7', region: 'var(--warn)' };
+                    const labels = { hire: 'HIRING', partner: 'PARTNERSHIP', region: 'REGIONAL' };
+                    return `<span style="font-size:10px;padding:1px 6px;border-radius:4px;background:rgba(255,255,255,0.06);color:${colors[t]};font-weight:600;margin-left:6px;">${labels[t]}</span>`;
+                }).join('');
+
+                return `<li class="rss-item">
+                    <div class="rss-item-title">
+                        <a href="${item.link}" target="_blank">${escapeHtml(item.title)}</a>${tagHtml}
+                    </div>
+                    <div class="rss-item-date">
+                        ${item.date ? new Date(item.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
+                        <span class="rss-item-source" style="margin-left: 8px;">${item.source}</span>
+                    </div>
+                </li>`;
+            }).join('');
+        }
+
+        function filterFeed(filter) {
+            currentFilter = filter;
+            renderFeedItems(allFeedItems, filter);
+        }
+
+        async function parseFeedViaProxy(feedUrl, sourceName) {
+            const proxyUrls = [
+                `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`,
+                `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`
+            ];
+
+            // Try rss2json first
+            try {
+                const resp = await fetch(proxyUrls[0]);
+                const data = await resp.json();
+                if (data.status === 'ok' && data.items) {
+                    return data.items.map(item => ({
+                        title: item.title,
+                        link: item.link,
+                        date: item.pubDate,
+                        source: sourceName,
+                        tags: classifyItem(item.title)
+                    }));
+                }
+            } catch (e) { /* fall through */ }
+
+            // Fallback: allorigins proxy + manual XML parse
+            try {
+                const resp = await fetch(proxyUrls[1]);
+                const text = await resp.text();
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(text, 'text/xml');
+                const items = xml.querySelectorAll('item');
+                return Array.from(items).map(item => ({
+                    title: item.querySelector('title')?.textContent || '',
+                    link: item.querySelector('link')?.textContent || '',
+                    date: item.querySelector('pubDate')?.textContent || '',
+                    source: sourceName,
+                    tags: classifyItem(item.querySelector('title')?.textContent || '')
+                }));
+            } catch (e) {
+                console.warn(`Feed fetch failed for ${sourceName}:`, e);
+                return [];
+            }
+        }
+
+        async function fetchAllFeeds() {
+            const statusEl = document.getElementById('feedStatus');
+            statusEl.className = 'feed-status feed-loading';
+            statusEl.innerHTML = '<span class="pulse"></span> Loading...';
+
+            const results = await Promise.allSettled(
+                RSS_FEEDS.map(f => parseFeedViaProxy(f.url, f.name))
+            );
+
+            allFeedItems = results
+                .filter(r => r.status === 'fulfilled')
+                .flatMap(r => r.value)
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            if (allFeedItems.length > 0) {
+                statusEl.className = 'feed-status feed-ok';
+                statusEl.innerHTML = `<span class="pulse"></span> ${allFeedItems.length} items loaded`;
+            } else {
+                statusEl.className = 'feed-status feed-err';
+                statusEl.textContent = 'Feeds unavailable — check manually';
+            }
+
+            renderFeedItems(allFeedItems, currentFilter);
+        }
+
+        // ==========================================
+        // GOOGLE NEWS SCRAPE (backup direct search)
+        // ==========================================
+        async function fetchGoogleNewsBackup() {
+            try {
+                const resp = await fetch(
+                    `https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.google.com/search?q=%22Ceres+Power%22+hiring+OR+appointed+OR+partnership&tbm=nws&tbs=qdr:m')}`
+                );
+                // This may be blocked but is a fallback attempt
+            } catch (e) { /* silent */ }
+        }
+
+        // Set today as default date
+        document.getElementById('entryDate').valueAsDate = new Date();
+
+        // Render on load
+        renderLog();
+        updateLastChecked();
+        fetchAllFeeds();
+    </script>
+</body>
+</html>
