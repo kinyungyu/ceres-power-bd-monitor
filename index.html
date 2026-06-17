@@ -1255,6 +1255,14 @@
                     <div class="check-box" onclick="toggleCheck(this)"></div>
                     <span class="check-label">Monthly: Check USPTO for new Ceres Power filings — manufacturing process or system design patents signal imminent US partner deal</span>
                 </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Weekly: Check Ceres career site for "Lead Engineer — Tech Transfer — US/North America" — this is the deal confirmation signal</span>
+                </li>
+                <li>
+                    <div class="check-box" onclick="toggleCheck(this)"></div>
+                    <span class="check-label">Weekly: Scan Indeed/LinkedIn for "SOFC manufacturing engineer" at any US company with no SOFC history — the golden ticket</span>
+                </li>
             </ul>
             <div style="margin-top: 12px;">
                 <button class="btn btn-export" onclick="resetChecklist()">Reset Checklist</button>
@@ -1566,11 +1574,142 @@
             </div>
         </div>
 
+        <!-- Job Signal Decoder -->
+        <div class="card" style="margin-bottom: 32px;">
+            <h2><span class="icon">&#128269;</span> SOFC Job Signal Decoder — Licence vs Own-Build</h2>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+                Not all SOFC hiring is equal. The job titles tell you whether a company is preparing to <strong>receive a Ceres licence</strong> (setting up a factory to build someone else's design) or <strong>developing proprietary technology</strong> (inventing their own). Use this framework to filter signals.
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                <!-- Licence Signal Column -->
+                <div style="background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px; padding: 16px;">
+                    <div style="font-weight: 700; color: var(--accent2); font-size: 14px; margin-bottom: 12px;">LICENCE SIGNAL — "Building to someone else's design"</div>
+                    <table class="people-table" style="margin: 0;">
+                        <thead><tr><th>Job Title to Watch</th><th>What They're Doing</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Manufacturing/Production Engineer — Fuel Cell</strong></td>
+                                <td>Setting up a production line using provided recipes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Process Technician — Ceramic/Coating</strong></td>
+                                <td>Operating equipment to licensor's specifications</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Quality Engineer — Fuel Cell</strong></td>
+                                <td>QA'ing cells against licensor's acceptance criteria</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Supply Chain Manager — Ceramics/Specialty Materials</strong></td>
+                                <td>Sourcing CGO powder, steel substrates, inks to spec</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Systems Integration Engineer</strong></td>
+                                <td>Wrapping licensed stacks into their own products</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Programme Manager — Technology Transfer</strong></td>
+                                <td>Managing multi-year tech transfer from licensor</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Factory/Plant Manager — New Facility</strong></td>
+                                <td>Running a new dedicated stack production line</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Applications Engineer — SOFC/SOEC</strong></td>
+                                <td>Adapting licensed tech for specific end markets</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Own-Build Signal Column -->
+                <div style="background: rgba(168,85,247,0.06); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; padding: 16px;">
+                    <div style="font-weight: 700; color: #a855f7; font-size: 14px; margin-bottom: 12px;">OWN-BUILD SIGNAL — "Inventing their own technology"</div>
+                    <table class="people-table" style="margin: 0;">
+                        <thead><tr><th>Job Title to Watch</th><th>What They're Doing</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Research Scientist — Electrochemistry</strong></td>
+                                <td>Doing fundamental cell science from scratch</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Materials Scientist — Ceramics/Perovskite</strong></td>
+                                <td>Inventing new cell compositions</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cell Designer/Architect</strong></td>
+                                <td>Designing their own anode/electrolyte/cathode stack</td>
+                            </tr>
+                            <tr>
+                                <td><strong>SOFC R&D Engineer</strong> (emphasis on "R&D")</td>
+                                <td>Experimenting, not manufacturing</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Patent Engineer — Fuel Cell</strong></td>
+                                <td>Filing their own proprietary IP</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lead Engineer — Thermal Spray Development</strong></td>
+                                <td>Inventing deposition methods (vs using a licensor's)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Postdoctoral Researcher — SOFC</strong></td>
+                                <td>Academic-style research, years from production</td>
+                            </tr>
+                            <tr>
+                                <td style="color: var(--muted);">—</td>
+                                <td style="color: var(--muted); font-style: italic;">All 7 GE Vernova roles fall in this column</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Golden Ticket -->
+            <div style="padding: 14px; background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px; margin-bottom: 16px;">
+                <strong style="color: var(--accent2);">The Golden Ticket Posting:</strong>
+                <span style="color: var(--text); font-size: 13px;"> The single most informative job to see on any US industrial's career page would be <strong>"Manufacturing Engineer — Solid Oxide Fuel Cell"</strong> or <strong>"Technology Transfer Programme Manager — Fuel Cell"</strong> at a company with <strong>zero existing SOFC expertise</strong>. That company is about to receive a licence — and Ceres is the leading licensor.</span>
+            </div>
+
+            <!-- Ceres' own hiring signal -->
+            <div style="padding: 14px; background: rgba(79,140,255,0.06); border: 1px solid rgba(79,140,255,0.3); border-radius: 8px; margin-bottom: 16px;">
+                <strong style="color: var(--accent);">Watch Ceres' Own Job Board:</strong>
+                <span style="color: var(--text); font-size: 13px;"> Ceres currently has a <strong>"Lead Engineer — Tech Transfer — Japan"</strong> posting (for the DENSO deal). A new <strong>"Lead Engineer — Tech Transfer — US/North America"</strong> on Ceres' career site means a US deal is signed or imminent. This is the earliest confirmation signal on the Ceres side.</span>
+            </div>
+
+            <!-- Search Queries -->
+            <div style="margin-bottom: 16px;">
+                <div style="font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 10px;">Pre-Built Search Queries</div>
+                <div class="alert-generator">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; color: var(--accent2); font-size: 13px; margin-bottom: 4px;">LICENCE SIGNAL (high value)</div>
+                        <div class="alert-query">"fuel cell" OR "SOFC" "manufacturing engineer" OR "production engineer" OR "quality engineer" OR "technology transfer" OR "supply chain" -research -R&D -scientist</div>
+                    </div>
+                    <a href="https://www.google.com/alerts?q=%22fuel+cell%22+OR+%22SOFC%22+%22manufacturing+engineer%22+OR+%22production+engineer%22+OR+%22quality+engineer%22+OR+%22technology+transfer%22+-research+-scientist" target="_blank" class="btn-sm btn-create">Create Alert</a>
+                </div>
+                <div class="alert-generator">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; color: var(--accent); font-size: 13px; margin-bottom: 4px;">CERES TECH TRANSFER HIRE (confirmation signal)</div>
+                        <div class="alert-query">"Ceres Power" OR "Ceres" "tech transfer" OR "technology transfer" OR "Lead Engineer" US OR America</div>
+                    </div>
+                    <a href="https://www.google.com/alerts?q=%22Ceres+Power%22+OR+%22Ceres%22+%22tech+transfer%22+OR+%22technology+transfer%22+OR+%22Lead+Engineer%22+US+OR+America" target="_blank" class="btn-sm btn-create">Create Alert</a>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <a href="https://careers.ceres.tech/jobs" target="_blank" class="btn-sm btn-create">Ceres Jobs — Watch for US Tech Transfer role</a>
+                <a href="https://www.indeed.com/q-Solid-Oxide-Fuel-Cell-jobs.html" target="_blank" class="btn-sm btn-copy">Indeed — All SOFC Jobs</a>
+                <a href="https://www.linkedin.com/jobs/search/?keywords=%22solid%20oxide%22%20%22manufacturing%20engineer%22&location=United%20States" target="_blank" class="btn-sm btn-copy">LinkedIn — SOFC Mfg Engineer US</a>
+            </div>
+        </div>
+
         <!-- Potential US Partners Watchlist -->
         <div class="card" style="margin-bottom: 32px;">
             <h2><span class="icon">&#127482;&#127480;</span> Potential US OEM Partner Watchlist — SOFC Hiring Tracker</h2>
             <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
-                Monitor these companies for SOFC-specific hiring, fuel cell announcements, and capex guidance mentioning distributed power. A target OEM hiring ceramic process engineers, stack assembly specialists, or electrochemists is the strongest forward indicator they are preparing to receive (or build) SOFC capability.
+                Monitor these companies for SOFC-specific hiring, fuel cell announcements, and capex guidance mentioning distributed power. Use the Job Signal Decoder above to distinguish licence signals from own-build signals.
             </p>
 
             <!-- GE Vernova — Reclassified: Building Own Capability -->
